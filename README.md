@@ -4,7 +4,7 @@ A dark/light Grav CMS theme for [arleo.eu](https://arleo.eu).
 
 Inspired by [LoveIt](https://hugoloveit.com/) (Hugo theme).
 
-![Screenshot](screenshot.jpg)
+![Screenshot](https://raw.githubusercontent.com/jmrGrav/grav-theme-arleov2/main/screenshot.jpg)
 
 ## Features
 
