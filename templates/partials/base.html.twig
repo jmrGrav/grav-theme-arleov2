@@ -1,0 +1,155 @@
+{% import 'macros/macros.html.twig' as macros %}
+{% set body_classes = body_class(['header-fixed', 'header-animated', 'sticky-footer']) %}
+{%- macro truncate(text, limit) -%}
+    {%- if text|length <= limit -%}
+        {{- text -}}
+    {%- else -%}
+        {%- set words = text|split(' ') -%}
+        {%- set result = '' -%}
+        {%- for word in words -%}
+            {%- set candidate = result ~ (loop.first ? '' : ' ') ~ word -%}
+            {%- if candidate|length <= limit -%}
+                {%- set result = candidate -%}
+            {%- endif -%}
+        {%- endfor -%}
+        {{- result }}…
+    {%- endif -%}
+{%- endmacro -%}
+{%- import _self as self_macros -%}
+{% set grid_size = theme_var('grid-size') %}
+{% set active_lang = grav.language.getActive ?: grav.config.site.default_lang %}
+{% use 'blocks/base.html.twig' %}
+<!DOCTYPE html>
+<html lang="{{ active_lang }}" data-theme="dark">
+<head>
+<script nonce="{{ csp_nonce|default('') }}">(function(){var t=localStorage.getItem('arleo-theme');if(!t)t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+{% block head deferred %}
+    <meta charset="utf-8" />
+    <title>{% if page.title %}{{ page.title|e('html') }} | {% endif %}{{ site.title|e('html') }}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'partials/metadata.html.twig' %}
+    <link rel="icon" type="image/png" href="{{ url('theme://images/favicon.png') }}" />
+    <link rel="canonical" href="{{ page.url(true, true) }}" />
+
+    <link id="hljs-dark-css" rel="stylesheet" href="{{ url('theme://css/hljs-dark.min.css') }}">
+    <link id="hljs-light-css" rel="stylesheet" href="{{ url('theme://css/hljs-light.min.css') }}" disabled>
+{% endblock head %}
+
+{% block stylesheets %}
+    {% do assets.addCss('theme://css/variables.css') %}
+    {% do assets.addCss('theme://css/line-awesome.min.css') %}
+    {% do assets.addCss('theme://css/theme.css') %}
+{% endblock %}
+
+{% block javascripts %}
+    {% do assets.addJs('theme://js/hljs.min.js', {group:'bottom', loading:'defer', nonce: csp_nonce|default('')}) %}
+    {% do assets.addJs('theme://js/theme.js', {group:'bottom', loading:'defer', nonce: csp_nonce|default('')}) %}
+{% endblock %}
+
+{% block assets deferred %}
+    {{ assets.css()|raw }}
+    {{ assets.js({nonce: csp_nonce|default("")})|raw }}
+{% endblock %}
+</head>
+<body id="top" class="{% block body_classes %}{{ body_classes }}{% endblock %}">
+
+<div id="sidebar-overlay"></div>
+
+<div id="page-wrapper">
+
+    {# ── Header : zone sidebar (logo+search) | spacer | controls ── #}
+    {% block header %}
+    <header class="site-header">
+        <div class="header-sidebar-zone">
+            <a href="{{ home_url }}" class="header-logo">
+                <img src="{{ url('theme://images/logo/583245d5-09b6-4cd3-bfff-789b97e4dda5.png') }}" alt="{{ site.title }}" />
+            </a>
+            <div class="header-search">
+                <input type="search" id="header-search"
+                       placeholder="{{ active_lang == 'en' ? 'Search…' : 'Rechercher…' }}"
+                       autocomplete="off" />
+            </div>
+        </div>
+        <div class="header-spacer"></div>
+        <div class="header-controls">
+            <a href="https://github.com/jmrGrav"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="header-icon-btn"
+               title="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24"
+                     width="18" height="18"
+                     fill="currentColor"
+                     aria-hidden="true">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23.735 1.035 2.805.795 3.48.225.075-.6.298-1.005.54-1.23-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+
+            <button class="theme-toggle" id="theme-toggle" title="Changer le thème">🌙</button>
+            <button class="sidebar-toggle" id="sidebar-toggle-btn" aria-label="Toggle menu">☰</button>
+        </div>
+    </header>
+    {% endblock %}
+
+    {# ── Body : sidebar (nav seule) + contenu ── #}
+    <div class="page-body">
+
+        <aside id="sidebar-nav">
+            <div class="sidebar-inner">
+                <ul id="sidebar-tree">
+                    {% for p in pages.children.visible %}
+                        {% set active = (p.active or p.activeChild) ? 'active' : '' %}
+                        {% if p.children.visible.count > 0 %}
+                        <li class="has-children{% if p.active or p.activeChild %} open{% endif %}">
+                            <span class="tree-toggle">▶</span>
+                            <a href="{{ p.url }}" class="{{ active }}" title="{{ p.title }}">{{ self_macros.truncate(p.title, 24) }}</a>
+                            <ul>
+                                {% for child in p.children.visible %}
+                                    {% set child_active = (child.active or child.activeChild) ? 'active' : '' %}
+                                    <li><a href="{{ child.url }}" class="{{ child_active }}" title="{{ child.title }}">{{ self_macros.truncate(child.title, 24) }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="{{ p.url }}" class="{{ active }}" title="{{ p.title }}">{{ self_macros.truncate(p.title, 24) }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+
+        <div id="main-content">
+
+        {% block hero %}{% endblock %}
+
+            <section id="start">
+            {% block body %}
+                <section id="body-wrapper" class="section">
+                    <section class="container {{ grid_size }}">
+                        {% block messages %}
+                          {% include 'partials/messages.html.twig' ignore missing %}
+                        {% endblock %}
+                        {{ block('content_surround') }}
+                    </section>
+                </section>
+            {% endblock %}
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% block footer %}
+    {% include 'partials/footer.html.twig' %}
+{% endblock %}
+
+
+{% block bottom %}
+    {{ assets.js('bottom', {nonce: csp_nonce|default("")})|raw }}
+{% endblock %}
+</body>
+</html>

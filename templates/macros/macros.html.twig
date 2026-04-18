@@ -1,0 +1,32 @@
+{% macro nav_loop(page) %}
+  {% import _self as macros %}
+  {% for p in page.children.visible %}
+    {% set active_page = (p.active or p.activeChild) ? 'active' : '' %}
+    <li>
+      <a href="{{ p.url }}" class="{{ active_page }}" title="{{ p.title }}">
+        {{ macros.truncate(p.title, 24) }}
+      </a>
+      {% if p.children.visible.count > 0 %}
+      <ul>
+        {{ macros.nav_loop(p) }}
+      </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+{% endmacro %}
+
+{% macro truncate(text, limit) %}
+  {%- if text|length <= limit -%}
+    {{ text }}
+  {%- else -%}
+    {%- set words = text|split(' ') -%}
+    {%- set result = '' -%}
+    {%- for word in words -%}
+      {%- set candidate = result ~ (loop.first ? '' : ' ') ~ word -%}
+      {%- if candidate|length <= limit -%}
+        {%- set result = candidate -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {{ result }}…
+  {%- endif -%}
+{% endmacro %}

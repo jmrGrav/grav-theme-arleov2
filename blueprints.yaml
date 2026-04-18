@@ -1,0 +1,30 @@
+name: ArLeo V2
+slug: arleov2
+type: theme
+version: 1.0.0
+description: "Dark/light Grav theme inspired by LoveIt — sidebar nav, highlight.js, CSP-compliant"
+icon: paint-brush
+author:
+  name: Jm Rohmer
+  email: 276982731+jmrGrav@users.noreply.github.com
+  url: https://arleo.eu
+homepage: https://github.com/jmrGrav/grav-theme-arleov2
+bugs: https://github.com/jmrGrav/grav-theme-arleov2/issues
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.7.0' }
+
+form:
+  validation: loose
+
+  fields:
+    grid-size:
+      type: select
+      label: Grid Size
+      size: small
+      options:
+        '': None
+        grid-xl: Extra Large
+        grid-lg: Large
+        grid-md: Medium

@@ -1,0 +1,29 @@
+# Grav config overrides (local only)
+arleov2.yaml
+*.local.yaml
+
+# Dev dependencies
+node_modules/
+.sass-cache/
+
+# Build artifacts
+css-compiled/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Inherited arleo/quark files (not part of arleov2)
+arleo.php
+arleo.yaml
+arleov2.yaml
+quark.php
+
+# Build tools (not needed for theme distribution)
+gulpfile.js
+package.json
+yarn.lock
+node_modules/
+.sass-cache/
+css-compiled/
+scss/

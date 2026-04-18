@@ -1,0 +1,78 @@
+{% extends 'partials/base.html.twig' %}
+
+{% set lang = grav.language.getActive ?: 'fr' %}
+
+{# ── Header : logo + status + "Tag : xxx" ── #}
+{% block header %}
+<section id="header" class="section">
+    <section class="container {{ grid_size }}">
+        <div class="article-page-header">
+            <div class="article-page-header-left">
+                {% include 'partials/logo.html.twig' %}
+                <a href="https://status.arleo.eu" target="_blank" id="status-link" title="État des services">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Status</span>
+                </a>
+            </div>
+            <div class="article-page-header-right">
+                <h1 class="article-title">
+                    {{ lang == 'en' ? 'Tag:' : 'Tag :' }}
+                    <span class="tag-badge" class="tag-heading-badge">{{ page.title }}</span>
+                </h1>
+            </div>
+        </div>
+    </section>
+</section>
+{% endblock %}
+
+{% block body %}
+<section id="body-wrapper" class="section">
+    <section class="container {{ grid_size }}">
+        {% set tagged_pages = grav.taxonomy.findTaxonomy({'tag': [page.title]}) %}
+        {% set seen_slugs = [] %}
+        {% set articles = [] %}
+        {% for article in tagged_pages %}
+            {% if article.published and article.slug != page.slug %}
+                {% set already = false %}
+                {% for s in seen_slugs %}{% if s == article.slug %}{% set already = true %}{% endif %}{% endfor %}
+                {% if not already %}
+                    {# prefer current language version #}
+                    {% if article.language == lang or article.language is null or article.language is empty %}
+                        {% set articles = articles|merge([article]) %}
+                        {% set seen_slugs = seen_slugs|merge([article.slug]) %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {# fallback: add any remaining lang that wasn't matched #}
+        {% for article in tagged_pages %}
+            {% if article.published %}
+                {% set already = false %}
+                {% for s in seen_slugs %}{% if s == article.slug %}{% set already = true %}{% endif %}{% endfor %}
+                {% if not already %}
+                    {% set articles = articles|merge([article]) %}
+                    {% set seen_slugs = seen_slugs|merge([article.slug]) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="tag-listing">
+            <h2>{{ articles|length }} {{ lang == 'en' ? 'article(s)' : 'article(s)' }}</h2>
+            {% if articles|length > 0 %}
+            <ul class="tag-article-list">
+                {% for article in articles %}
+                <li>
+                    <a href="{{ article.url }}">{{ article.title }}</a>
+                    {% if article.date %}
+                        <span class="tag-article-date">— {{ article.date|date(system.pages.dateformat.short) }}</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>{{ lang == 'en' ? 'No articles with this tag.' : 'Aucun article avec ce tag.' }}</p>
+            {% endif %}
+        </div>
+    </section>
+</section>
+{% endblock %}

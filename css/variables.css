@@ -1,0 +1,125 @@
+/* ═══════════════════════════════════════════════════════════
+   CSS Custom Properties — ArLeo V2
+   Dark mode default; light mode via [data-theme="light"]
+   ═══════════════════════════════════════════════════════════ */
+
+:root,
+[data-theme="dark"] {
+    /* ── Backgrounds ── */
+    --bg-page:        #1e1e2e;
+    --bg-sidebar:     #1a1a2e;
+    --bg-header:      #181825;
+    --bg-card:        #252536;
+    --bg-code:        #1e2a3a;
+    --bg-table-head:  #1a2332;
+    --bg-table-even:  #252536;
+    --bg-tag:         #1a2332;
+    --bg-input:       #313244;
+    --bg-hover:       #313244;
+    --bg-footer:      #11111b;
+    --bg-related:     #252536;
+
+    /* ── Text ── */
+    --text-primary:   #cdd6f4;
+    --text-secondary: #a6adc8;
+    --text-muted:     #6c7086;
+    --text-heading:   #cdd6f4;
+    --text-code:      #e8e8e8;
+
+    /* ── Accents ── */
+    --accent-primary:  #89b4fa;
+    --accent-hover:    #b4d0fa;
+    --accent-green:    #a6e3a1;
+    --accent-border:   #2980b9;
+
+    /* ── Borders ── */
+    --border-subtle:   #313244;
+    --border-medium:   #45475a;
+    --border-divider:  #313244;
+
+    /* ── Sidebar ── */
+    --sidebar-link:         #cdd6f4;
+    --sidebar-link-hover:   #89b4fa;
+    --sidebar-active-bg:    #252540;
+    --sidebar-active-color: #89b4fa;
+    --sidebar-header-color: #6c7086;
+
+    /* ── Buttons ── */
+    --btn-bg:          #2980b9;
+    --btn-color:       #fff;
+    --btn-hover-bg:    #1a6fa0;
+    --btn-border:      #2980b9;
+
+    /* ── Shadow ── */
+    --shadow-sidebar:  4px 0 20px rgba(0,0,0,0.5);
+    --shadow-mobile-btn: 0 1px 4px rgba(0,0,0,0.3);
+
+    /* ── Status dot ── */
+    --status-color:    #a6e3a1;
+    --status-shadow:   #a6e3a1aa;
+
+    /* ── Layout ── */
+    --header-height: 56px;
+    --nav-width:     260px;
+
+    /* ── Typography (system fonts — no external CDN) ── */
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                 Helvetica, Arial, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
+                 Courier, monospace;
+}
+
+[data-theme="light"] {
+    /* ── Backgrounds ── */
+    --bg-page:        #f8f9fa;
+    --bg-sidebar:     #e8ecf0;
+    --bg-header:      #ffffff;
+    --bg-card:        #ffffff;
+    --bg-code:        #282c34;
+    --bg-table-head:  #2c3e50;
+    --bg-table-even:  #f2f4f6;
+    --bg-tag:         #e8ecf0;
+    --bg-input:       #ffffff;
+    --bg-hover:       #dde3ea;
+    --bg-footer:      #e8ecf0;
+    --bg-related:     #f0f4f8;
+
+    /* ── Text ── */
+    --text-primary:   #2c3e50;
+    --text-secondary: #555e6b;
+    --text-muted:     #888fa0;
+    --text-heading:   #1a2332;
+    --text-code:      #abb2bf;
+
+    /* ── Accents ── */
+    --accent-primary:  #2980b9;
+    --accent-hover:    #1a6fa0;
+    --accent-green:    #27ae60;
+    --accent-border:   #2980b9;
+
+    /* ── Borders ── */
+    --border-subtle:   #dde3ea;
+    --border-medium:   #c5ccd5;
+    --border-divider:  #dde3ea;
+
+    /* ── Sidebar ── */
+    --sidebar-link:         #2c3e50;
+    --sidebar-link-hover:   #2980b9;
+    --sidebar-active-bg:    #dde9f5;
+    --sidebar-active-color: #1a6fa0;
+    --sidebar-header-color: #888fa0;
+
+    /* ── Buttons ── */
+    --btn-bg:          #2980b9;
+    --btn-color:       #fff;
+    --btn-hover-bg:    #1a6fa0;
+    --btn-border:      #2980b9;
+
+    /* ── Shadow ── */
+    --shadow-sidebar:  4px 0 12px rgba(0,0,0,0.15);
+    --shadow-mobile-btn: 0 1px 4px rgba(0,0,0,0.15);
+
+    /* ── Status dot ── */
+    --status-color:    #27ae60;
+    --status-shadow:   #27ae6088;
+}
